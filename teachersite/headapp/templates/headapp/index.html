@@ -1,0 +1,11 @@
+{% extends 'headapp/base.html' %}
+
+{% block content %}
+<ul>
+    {% for p in posts  %}
+    <h2>{{p.title}}</h2>
+    <p>{{p.content}}</p>
+    <hr>
+    {% endfor %}
+</ul>
+{% endblock %}
