@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from headapp.models import *
 
 menu = [{'title': "Главная", 'url_name': 'home'},
@@ -10,11 +10,9 @@ menu = [{'title': "Главная", 'url_name': 'home'},
 
 def index(request):
     posts = News.objects.all()
-    cats = Category.objects.all()
     context = {
         'menu': menu,
         'title': 'Главная страница',
-        'cats': cats,
         'posts': posts,
         'cat_selected': 0,
     }
@@ -35,11 +33,11 @@ def show_post(request, post_id):
     return HttpResponse(f"Отображение статьи с ID = {post_id}")
 def show_category(request, cat_id):
     posts = News.objects.filter(cat_id=cat_id)
-    cats = Category.objects.all()
+    if len(posts)==0:
+        raise Http404()
     context = {
         'menu': menu,
         'title': 'Главная страница',
-        'cats': cats,
         'posts': posts,
         'cat_selected': cat_id,
     }
