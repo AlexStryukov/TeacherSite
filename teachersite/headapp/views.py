@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from multiprocessing import context
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, Http404
 from headapp.models import *
 
@@ -29,8 +30,17 @@ def achievements(request):
     return HttpResponse('Достижения')
 def feedback(request):
     return HttpResponse('Обратная связь')
+
 def show_post(request, post_id):
-    return HttpResponse(f"Отображение статьи с ID = {post_id}")
+    post = get_object_or_404(News, pk=post_id)
+
+    context = {
+        'post': post,
+        'menu': menu,
+        'title': post.title,
+        'cat_selected': post.cat_id,
+    }
+    return render(request, 'headapp/post.html', context=context)
 def show_category(request, cat_id):
     posts = News.objects.filter(cat_id=cat_id)
     if len(posts)==0:
