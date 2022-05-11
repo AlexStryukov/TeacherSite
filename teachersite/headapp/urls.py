@@ -8,6 +8,6 @@ urlpatterns = [
     path('method_work/', method_work, name='method_work'),
     path('achievements/', achievements, name='achievements'),
     path('feedback/', feedback, name='feedback'),
-    path('post/<int:post_id>/', show_post, name='posts'),
-    path('category/<int:cat_id>/', show_category, name='category'),
+    path('post/<slug:post_slug>/', show_post, name='posts'),
+    path('category/<slug:cat_slug>/', show_category, name='category'),
 ]
