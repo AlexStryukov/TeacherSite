@@ -1,5 +1,6 @@
+from ast import Try
 from multiprocessing import context
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse, Http404
 from headapp.models import *
 from headapp.forms import *
@@ -39,10 +40,15 @@ def achievements(request):
 
 
 def addpage(request):
+
     if request.method == "POST":
         form = AddPostForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
+            try:
+                News.objects.create(**form.cleaned_data)
+                return redirect('home')
+            except:
+                form.add_error(None, "Ошибка добавления поста")
     else:
         form = AddPostForm()
     context = {
